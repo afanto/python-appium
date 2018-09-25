@@ -10,7 +10,6 @@ PATH = lambda p: os.path.abspath(
     os.path.join(os.path.dirname(__file__), p)
 )
 
-
 class WikipediaTests(unittest.TestCase):
 
     def setUp(self):
@@ -27,30 +26,39 @@ class WikipediaTests(unittest.TestCase):
         self.driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
 
     def tearDown(self):
-            self.driver.quit()
+        self.driver.quit()
 
-    def test_1(self):
-        waitForElementByXpathAndClick(
+    def test_first(self):
+
+        self.wait_for_element_by_xpath_and_click(
             "//*[contains(@text, 'Search Wikipedia')]",
             "Cannot find Search Wikipedia input",
-            5
+            10
         )
-        waitForElementByXpathAndSendKeys(
+
+        self.wait_for_element_by_xpath_and_send_keys(
             "//*[contains(@text, 'Search…')]",
             "Java",
             "Cannot find search input",
             5
         )
-        wait_for_element_present_by_xpath(
+
+        self.wait_for_element_present_by_xpath(
             "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']",
-            "Cannot find 'Object-oriented programming language", 5)
+            "Cannot find 'Object-oriented programming language"
+        )
 
-    def wait_for_element_present_by_xpath(self, xpath, error_message, timeout_in_seconds):
-        wait = WebDriverWait(self.driver, timeout_in_seconds)
-        wait.withMessage(error_message + "\n")
-        by = By.xpath(xpath)
-        return wait.until(EC.presenceOfElementLocated(by))
+    def wait_for_element_by_xpath_and_click(self, xpath, error_message, timeout_seconds):
+        element = self.wait_for_element_present_by_xpath(xpath, error_message, timeout_seconds)
+        element.click()
+        return element
 
-    def wait_for_element_present_by_xpath(self, xpath, error_message):
-        return wait_for_element_present_by_xpath(xpath, error_message)
+    def wait_for_element_present_by_xpath(self, xpath, error_message, timeout_seconds=5):
+        wait = WebDriverWait(self.driver, timeout_seconds)
+        by = (By.XPATH, xpath)
+        return wait.until(EC.presence_of_element_located(by), error_message + "\n")
 
+    def wait_for_element_by_xpath_and_send_keys(self, xpath, value, error_message, timeout_seconds):
+        element = self.wait_for_element_present_by_xpath(xpath, error_message, timeout_seconds)
+        element.send_keys(value)
+        return element
