@@ -10,7 +10,12 @@ PATH = lambda p: os.path.abspath(
     os.path.join(os.path.dirname(__file__), p)
 )
 
+
 class WikipediaTests(unittest.TestCase):
+
+    INIT_SEARCH = "//*[contains(@text, 'Search Wikipedia')]"
+    SEARCH_FIELD = "//*[contains(@text, 'Search…')]"
+    SEARCH_RESULT = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"
 
     def setUp(self):
         desired_caps = {}
@@ -31,20 +36,20 @@ class WikipediaTests(unittest.TestCase):
     def test_first(self):
 
         self.wait_for_element_by_xpath_and_click(
-            "//*[contains(@text, 'Search Wikipedia')]",
+            self.INIT_SEARCH,
             "Cannot find Search Wikipedia input",
             10
         )
 
         self.wait_for_element_by_xpath_and_send_keys(
-            "//*[contains(@text, 'Search…')]",
+            self.SEARCH_FIELD,
             "Java",
             "Cannot find search input",
             5
         )
 
         self.wait_for_element_present_by_xpath(
-            "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']",
+            self.SEARCH_RESULT,
             "Cannot find 'Object-oriented programming language"
         )
 
