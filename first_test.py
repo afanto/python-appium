@@ -1,40 +1,17 @@
-import unittest
-import os
-from appium import webdriver
+from .src import CoreTestCase
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-# Returns abs path relative to this file and not cwd
-PATH = lambda p: os.path.abspath(
-    os.path.join(os.path.dirname(__file__), p)
-)
 
 
-class WikipediaTests(unittest.TestCase):
+class WikipediaTests(CoreTestCase):
 
     INIT_SEARCH = "//*[contains(@text, 'Search Wikipedia')]"
     SEARCH_FIELD = "//*[contains(@text, 'Search…')]"
     SEARCH_RESULT = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"
 
-    def setUp(self):
-        desired_caps = {}
-        desired_caps['platformName'] = 'Android'
-        desired_caps['platformVersion'] = '9'
-        desired_caps['deviceName'] = 'Android Emulator'
-        desired_caps['app'] = PATH(
-            '/users/andreyfrantov/prog/python_appium/apks/org.wikipedia.apk'
-        )
-        desired_caps['appPackage'] = 'org.wikipedia'
-        desired_caps['appActivity'] = '.main.MainActivity'
-
-        self.driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
-
-    def tearDown(self):
-        self.driver.quit()
-
     def test_first(self):
-
         self.wait_for_element_by_xpath_and_click(
             self.INIT_SEARCH,
             "Cannot find Search Wikipedia input",
