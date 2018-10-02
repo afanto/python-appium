@@ -1,11 +1,11 @@
-from appium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-class MainPageObject():
 
-    def main_page_object(self, driver):
+class MainPageObject:
+
+    def __init__(self, driver):
         self.driver = driver
 
     def wait_for_element_present(self, locator, error_message, timeout_seconds=5):
@@ -28,13 +28,13 @@ class MainPageObject():
         by_type = exploded_locator[0]
         locator = exploded_locator[1]
 
-        if by_type.equals("xpath"):
+        if by_type == "xpath":
             by = (By.XPATH, locator)
             return by
-        elif by_type.equals("id"):
+        elif by_type == "id":
             by = (By.ID, locator)
             return by
-        elif by_type.equals("css"):
+        elif by_type == "css":
             by = (By.CSS_SELECTOR, locator)
             return by
         else:

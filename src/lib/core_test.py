@@ -30,4 +30,3 @@ class CoreTestCase(TestCase):
     def tearDown(self):
         self.driver.quit()
         super().tearDown()
-        
