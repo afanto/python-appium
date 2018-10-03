@@ -16,16 +16,15 @@ class CoreTestCase(TestCase):
     def setUp(self):
         warnings.simplefilter('ignore')
         super().setUp()
-        desired_caps = {}
-        desired_caps['platformName'] = 'Android'
-        desired_caps['platformVersion'] = '9'
-        desired_caps['avd'] = 'Nexus_5X_API_28_x86'
-        desired_caps['deviceName'] = 'Nexus_5X_API_28_x86'
-        desired_caps['app'] = PATH(
-            '/users/andreyfrantov/prog/python-appium/apks/org.wikipedia.apk'
-        )
-        desired_caps['appPackage'] = 'org.wikipedia'
-        desired_caps['appActivity'] = '.main.MainActivity'
+        desired_caps = {
+            'platformName': 'Android',
+            'platformVersion': '9',
+            'avd': 'Nexus_5X_API_28_x86',
+            'deviceName': 'Nexus_5X_API_28_x86',
+            'app': PATH('/users/andreyfrantov/prog/python-appium/apks/org.wikipedia.apk'),
+            'appPackage': 'org.wikipedia',
+            'appActivity': '.main.MainActivity'
+        }
 
         self.driver = webdriver.Remote(self.APPIUM_URL, desired_caps)
 
